@@ -1,0 +1,166 @@
+<<html>
+<head>
+    <meta charset="UTF-8">
+    <title>canvas rainbow</title>
+</head>
+<body>
+
+    <canvas width = "1000px" height = "800px" id = "rainbow" style = "border:black 1px solid;">
+        
+    </canvas>
+</body>
+    <script type="text/javascript">
+        window.onload = dodraw;
+
+        var attrs = {};
+        var shapM = [];
+
+        function Shap(z) {
+            this.z = z;
+            this.tag=0;
+            this.vt = 0;
+            this.rt = (this.sattr.ra - this.sattr.ro) / 2000;
+            this.to = attrs.t;
+        }
+
+        Shap.prototype = {
+            constructor: Shap,
+            sattr: {
+                ro: 200, //ro更改增量与ra可保持上下位移
+                ya: -4700,
+                ra: 5100
+            },
+            circle: function() {
+                if (this.vt < 1900) {
+                    this.vt += (150 - attrs.t);
+                    this.va = this.sattr.ya + this.rt * this.vt - this.vt / 9;
+                    this.vr = this.sattr.ra - this.rt * this.vt + this.z * 2;
+                } else if (this.vt > 1900 && this.vt <= 2010) {
+                    this.vt = 2010;
+                    this.va = this.sattr.ya + this.rt * this.vt - this.vt / 9;
+                    this.vr = this.sattr.ra - this.rt * this.vt + this.z * 2;
+                    // this.vr=400;此时为大约等于平移到等比的半径性状
+                    this.vt += 100; //跳出状态条件
+                } else {
+                    if (this.vr <= 400 + this.z / 5 && this.vr > 100 + this.z / 5) { //控制等比缩放速率以及趋近终点半径为参考
+                        this.vr -= 30;
+                        if (this.vr < 100 + this.z / 5) {
+                            this.vr = 100 + this.z / 5; //终点半径控制。
+                            attrs.ctx.lineWidth = 2;
+                            this.tag = 2;
+                        }
+                    }
+                }
+                attrs.ctx.arc(0, this.va, this.vr, 0, Math.PI / 2, false);
+            }
+        }
+
+        function Coline(va, vr) {
+            this.va = va;
+            this.vr = vr;
+        }
+        Coline.prototype = {
+            constructor: Coline,
+            circle: function() {
+                attrs.ctx.arc(0, this.va, this.vr, 0, Math.PI / 2, false);
+            }
+        }
+
+        function contruler(i) {
+            if (shapM[i].tag==1) {
+                attrs.ctx.lineWidth = 40 - 2 * (attrs.t - shapM[i].to-i);
+            } else if(shapM[i].tag==2){
+                attrs.ctx.lineWidth = 2;
+            }else {
+                attrs.ctx.lineWidth = 50;
+            }
+        }
+
+        function setler(i) {
+            attrs.ctx.shadowOffsetY = 4;
+            attrs.ctx.shadowBlur = 6;
+            switch (i) {
+                case 0:
+                    attrs.ctx.shadowColor = "rgba(133, 82,161, 1)"; //'#8552a1';
+                    attrs.ctx.strokeStyle = "rgba(133, 82,161, 1)";
+                    contruler(i);
+                    break;
+                case 1:
+                    attrs.ctx.shadowColor = "rgba(20,91,125, 1)";//'#145b7d';
+                    attrs.ctx.strokeStyle = "rgba(20,91,125, 1)";
+                    contruler(i);
+                    break;
+                case 2:
+                    attrs.ctx.shadowColor = "rgba(114,186,167 1)";//'#72baa7';
+                    attrs.ctx.strokeStyle = "rgba(114,186,167, 1)";
+                    contruler(i);
+                    break;
+                case 3:
+                    attrs.ctx.shadowColor = "rgba(0,88,49, 1)";//'#005831';
+                    attrs.ctx.strokeStyle = "rgba(0,88,49, 1)";
+                    contruler(i);
+                    break;
+                case 4:
+                    attrs.ctx.shadowColor = "rgba(255,212,0, 1)";//'#ffd400';
+                    attrs.ctx.strokeStyle = "rgba(255,212,0, 1)";
+                    contruler(i);
+                    break;
+                case 5:
+                    attrs.ctx.shadowColor = "rgba(244,121,32 1)";//'#f47920';
+                    attrs.ctx.strokeStyle = "rgba(244,121,32, 1)";
+                    contruler(i);
+                    break;
+                case 6:
+                    attrs.ctx.shadowColor = "rgba(237,25,65, 1)";//'#ed1941';
+                    attrs.ctx.strokeStyle = "rgba(237,25,65, 1)";
+                    contruler(i);
+                    break;
+            }
+        }
+
+        function dodraw() {
+            attrs.t = 0;
+            attrs.i = 0;
+            attrs.j = 20;
+            attrs.cvas = document.getElementById("rainbow");
+            attrs.ctx = attrs.cvas.getContext('2d');
+            attrs.cvas.style.backgroundColor = "#ccc";
+
+            for (var i = 0; i < 7; i++) {
+                shapM[i] = new Coline(-4700, 5100 + 40 * i);
+                setler(i);
+                attrs.ctx.beginPath();
+                shapM[i].circle();
+                attrs.ctx.lineWidth = 50;
+                attrs.ctx.stroke();
+                attrs.ctx.closePath();
+            } 
+            attrs.k = setInterval(draw, 20);
+        }
+
+        function draw() {
+            if (attrs.i < 7) {
+                if (attrs.j < 5) {
+                    attrs.j++;
+                } else {
+                    shapM[attrs.i] = new Shap(attrs.i * 20);
+                    shapM[attrs.i].tag = 1;
+                    attrs.j = 0;
+                    attrs.i++;
+                }
+            }
+            attrs.ctx.clearRect(0, 0, 1000, 1000);
+            for (var i = 0; i < 7; i++) {
+                setler(i);
+                attrs.ctx.beginPath();
+                shapM[i].circle();
+                attrs.ctx.stroke();
+                attrs.ctx.closePath();
+            }
+            attrs.t++;
+            if (attrs.t >= 66) {
+                clearInterval(attrs.k);
+            }
+        }
+    </script>
+</html>
