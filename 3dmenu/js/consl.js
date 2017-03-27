@@ -51,7 +51,7 @@ window.onload = function() {
         uwrap.style.visibility = 'hidden';
         // uwrap.style.display='none';
         sunbox.style.width = uwrap.offsetWidth + 'px';
-    }, 1000);
+    }, 2000);
     document.body.style.fontSize = bodyw * 0.02 + 'px';
     leftEl.style.width = bodyw * 0.26 + 'px';
     /*//一些相关元素的禁锢缩放控制 
