@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <title>ABCD</title>
+    <link href="css/cs00.css" rel="stylesheet" type="text/css"/>
+    <script language="javascript">
+	//.......
+        // function mouseOver(){
+            // var e=evt||event;
+            // alert(this.tagName);
+            // var ele=this.getElementsByTagName('ul')[0];
+            // ele.style.visibility='visible';
+        // }
+        // window.onbeforeunload = function (e) {
+        //     e = e || window.event;
+
+        //         // 兼容IE8和Firefox 4之前的版本
+        //     if (e) {
+        //         e.returnValue = '关闭提示';
+        //     }
+
+        //         // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+        //     return '关闭提示';
+        // };
+    </script>
+    <script type="text/javascript" language="javascript" src="js/consl.js"></script>
+    
+</head>
+
+<body id="bdy">
+     
+    <header  id="zhezhao"></header>
+    <!-- <img id='im' src="images//ready/sgf_tbd.jpg" alt="" /> -->
+
+    <div id="contener">
+        <div id="bodyer1" class="clearfix">
+            <div id="imgs">
+            </div>
+            
+            <div id="left">
+                <div id="lmid">
+                <span id="author">作<br/>者</span>
+                    <hr/> 
+                    <div><table><tr><td>author:</td><td>李道冲</td></tr><tr><td>real-name：</td><td>李连杰</td></tr></table></div> 
+                    <hr/>
+                </div>
+                <div id="cd"> 
+                    <div id="pu">谱</div>
+                    <!-- <div id="sleft"></div> -->
+                    <ul id="uwrap" >
+                    <li id="firstli">
+                        <ul id="ful"><li id="fli"><span id="fspan">菜</span><span>系</span></li><li><span>菜</span><span>式</span></li><li><span>地</span><span>域</span></li><li><span>特</span><span>色</span></li></ul>
+                    </li>
+                    <li  id="lione" class="eveni">
+                        <ul><li><span>主</span><span>食</span></li><li><span>烘</span><span>焙</span></li><li><span>饮</span><span>品</span></li><li><span>茶</span><span>点</span></li></ul>
+                    </li>
+                    <li class="oddi">
+                        <ul><li><span>口</span><span>感</span></li><li><span>观</span><span>感</span></li><li><span>风</span><span>味</span></li><li><span>食</span><span>材</span></li></ul>
+                    </li>
+                    <li class="eveni">
+                        <ul><li><span>场</span><span>合</span></li><li><span>人</span><span>群</span></li><li><span>节</span><span>日</span></li><li><span>时</span><span>令</span></li></ul>
+                    </li>
+                    <li class="oddi">
+                        <ul><li><span>功</span><span>效</span></li><li><span>工</span><span>艺</span></li><li><span>用</span><span>器</span></li><li><span>价</span><span>格</span></li></ul>
+                    </li>
+                    </ul>
+                </div>
+                
+            </div>
+         
+            <div id="middle">
+            <div id="toper">
+                <ul id='three'></ul>
+            </div>
+            </div>
+        </div>
+        <div id="bodyer2">
+            <div id="dian">
+                <div id="switch1" >
+                        <input type="checkbox" name="xxx" id="gcbx" onselectstart="return false;"  >
+                        <label for="gcbx" >
+                            <li><div id="context"></div></li>
+                            <div class="pi"></div>
+                            <div id="zhezhao"  ></div>
+                        </label>
+                </div>
+            </div>
+                <!-- <div id="bars">
+                    <ul class="clearfix">
+                        <li></li>
+                    </ul>
+                </div> -->
+                <div id="dimension">
+                    <canvas id="myCanvas">
+                    </canvas>
+                </div>
+        </div>       
+        
+    </div> <!-- end of wrapper -->
+</div> <!-- end of slider -->
+        </div>
+    </div>
+    <div id='button1'></div>
+
+    <!-- 下面是菜单内容数据 -->
+    <div id="sunbox"></div>
+    <dl id='menucon'>
+        <dt>菜系</dt>
+        <dd><ul>
+        <li> 鲁菜</li><li>川菜</li><li>苏菜</li><li>粤菜</li><li>闽菜</li><li>徽菜</li><li>湘菜</li><li>浙菜</li><li>其他</li>
+        </ul></dd>
+
+        <dt>菜式</dt>
+        <dd><ul>
+        <li>家常菜</li><li>下饭菜</li><li>下酒菜</li><li>甜品</li><li>沙拉</li><li>私家菜</li><li>凉菜</li><li>咸菜</li><li>煲汤</li>
+        </ul></dd>
+        
+        <dt>地域</dt>
+        <dd><ul>
+        <li>中国素斋</li><li>中国江河湖水域</li><li>中国南北内陆</li><li>中国高原区</li><li>东亚其他</li><li>欧洲</li><li>美洲</li><li>非洲</li><li>澳洲</li><li>重叠特色</li>
+        </ul></dd>
+     
+        <dt>特色</dt>
+        <dd><ul>
+        <li>创意菜</li>
+        </ul></dd>
+        
+        <dt>主食</dt>
+        <dd><ul>
+        <li>煲仔饭</li><li>盖浇饭</li><li>焗饭</li><li>烩饭</li><li>焖饭</li><li>粥</li><li>寿司</li><li>炒饼</li><li>意大利面</li><li>披萨</li><li>炒面</li><li>焖面</li><li>凉面</li><li>拌面</li><li>包子</li><li>馒头</li><li>饺子</li><li>馄饨</li><li>便当</li><li>油条</li><li>花卷</li><li>锅贴</li><li>窝头</li><li>盒子</li><li>发糕</li><li>三明治</li><li>汉堡</li><li>馕</li><li>锅盔</li><li>玉米饼</li><li>卷饼</li><li>河粉</li><li>米粉</li><li>米线</li><li>肉夹馍</li>
+        </ul></dd>
+           
+        <dt>烘焙</dt>
+        <dd><ul>
+        <li>面包</li><li>饼干</li><li>戚风</li><li>蛋糕</li><li>泡芙</li><li>蛋糕卷</li><li>杯子</li><li>蛋糕</li><li>芝士蛋糕</li><li>马芬</li><li>曲奇</li><li>吐司</li><li>海绵蛋糕</li><li>蛋糕</li><li>慕斯蛋糕</li><li>奶油蛋糕</li><li>磅蛋糕</li><li>小蛋糕</li><li>翻糖蛋糕</li><li>欧式蛋糕</li><li>派<li>挞</li><li>马卡龙</li><li>中式糕点</li><li>月饼</li>
+        </ul></dd>
+         
+        <dt>饮品</dt>
+        <dd><ul>
+        <li>茶</li><li>红酒</li><li>果酒</li><li>白酿</li><li>饮料</li><li>汤</li><li>素水</li>
+        </ul></dd>
+        
+        <dt>茶点</dt>
+        <dd><ul>
+        <li>台湾麻薯</li><li>凤梨酥</li><li>台湾烧饼</li><li>冰沙馅饼</li><li>松塔千层酥</li><li>杏仁酥饼</li><li>竹炭花生</li><li>红桃果</li><li>宝豆饼</li><li>黄远堂伊豆酥</li><li>大八件</li><li>小八件</li><li>酒皮八件</li><li>酥皮八件</li><li>水果杏仁冻</li><li>玉兔点船</li><li>磬苑宾格</li><li>腊味三角糍</li><li>卜卜糯米卷</li><li>百合酥</li><li>申江拉糕</li><li>山药糕</li>
+        </ul></dd>
+        
+        <dt>工艺</dt>
+        <dd><ul>
+        <li>炒</li><li>爆</li><li>熘</li><li>炸</li><li>烹</li><li>煎</li><li>贴</li><li>烧</li><li>焖</li><li>炖</li><li>蒸</li><li>汆</li><li>煮</li><li>烩</li><li>炝</li><li>腌</li><li>拌</li><li>烤</li><li>卤</li><li>冻</li><li>熏</li><li>卷</li><li>拔丝</li><li>蜜汁</li>
+        </ul></dd>
+
+        <dt>口感</dt>
+        <dd><ul>
+        <li>美味可口</li><li>酸甘辛苦</li><li>甜而不腻</li><li>浓而不腻</li><li>皮酥肉嫩</li><li>沁人心脾</li><li>其味无穷</li><li>肉汁四溢</li><li>入口即溶</li><li>软而滑嫩</li><li>软嫩滑爽</li><li>润滑爽口</li><li>爽滑酥嫩</li><li>酥脆爽口</li><li>绵软侵味</li><li>爽脆侵味</li><li>吐香喷艳</li><li>点酸提神</li><li>涩</li>
+        </ul></dd>
+        
+        <dt>风味</dt>
+        <dd><ul>
+        <li>苦</li><li>辣</li><li>酸</li><li>甜</li><li>咸</li><li>海腥</li><li>酵香</li><li>五香</li><li>淡香</li><li>浓郁</li><li>野烤</li><li>生</li>
+        </ul></dd>
+        
+        <dt>食材</dt>
+        <dd><ul>
+        <li>畜类</li><li>水产</li><li>蛋类</li><li>蔬菜</li><li>瓜果</li><li>豆类</li><li>五谷</li><li>调味品</li><li>乳类</li><li>药食两用</li><li>工艺配料</li>
+        </ul></dd>
+        
+        <dt>场合</dt>
+        <dd><ul>
+        <li>早餐</li><li>中餐</li><li>晚餐</li><li>下午茶</li><li>宵夜</li><li>朋友聚餐</li><li>二人世界</li><li>户外野炊</li><li>单身食谱</li><li>深夜食堂</li><li>宴席</li>
+        </ul></dd>
+
+        <dt>人群</dt>
+        <dd><ul>
+        <li>备孕</li><li>宝宝</li><li>婴儿</li><li>幼儿</li><li>儿童3岁</li><li>儿童4岁</li><li>儿童5岁</li><li>儿童6岁</li><li>儿童7岁</li><li>儿童8岁</li><li>儿童9岁</li><li>孕早期</li><li>孕中期</li><li>孕晚期</li><li>产妇</li><li>孕妇营养</li><li>儿童免疫力</li><li>儿童增高</li><li>儿童开胃2岁</li><li>老人</li>
+        </ul></dd>
+        
+        <dt>节日</dt>
+        <dd><ul>
+        <li>春节</li><li>元宵节</li><li>二月二</li><li>清明节</li><li>端午节</li><li>七夕节</li><li>中元节</li><li>中秋节</li><li>重阳节</li><li>万圣节</li><li>感恩节</li><li>下元节</li><li>圣诞节</li><li>元旦</li><li>腊八节</li><li>小年年夜饭</li><li>复活节</li><li>父亲节</li><li>母亲节</li><li>儿童节</li><li>妇女节</li><li>教师节</li><li>情人节</li>
+        </ul></dd>
+        
+        <dt>时令</dt>
+        <dd><ul>
+        <li>春</li><li>夏</li><li>秋</li><li>冬</li><li>忙时调配速食</li>
+        </ul></dd>
+        
+        <dt>观感</dt>
+        <dd><ul>
+        <li>干素</li><li>润泽</li><li>拼盘</li><li>花雕</li><li>海市辰楼</li><li>饕餮大艳</li>
+        </ul></dd>
+        
+        <dt>功效</dt>
+        <dd><ul><li>调气养神</li><li>清热去火</li><li>补热去寒</li><li>滋血</li><li>养颜</li><li>瘦身</li><li>热量速码</li><li>温热养胃</li>
+        </ul></dd>
+       
+        <dt>用器</dt>
+        <dd><ul>
+        <li>电饭煲</li><li>烤箱</li><li>微波炉</li><li>高压锅</li><li>塔吉锅</li><li>电饼铛</li><li>平底锅</li><li>砂锅</li><li>豆浆机</li><li>榨汁机</li><li>面包机</li><li>料理机</li><li>电炖锅</li><li>电压力锅</li><li>蒸锅</li><li>汤锅</li><li>炖盅</li><li>煮锅</li><li>炒锅</li><li>搅拌机</li><li>打蛋器</li><li>老铁锅</li><li>酸奶机</li><li>烤炉</li><li>瓦煲</li><li>模具锅</li><li>焖烧锅</li><li>咖啡机</li><li>调酒器</li><li>吐司炉</li><li>空气炸锅</li><li>电子瓦煲</li>
+        </ul></dd>
+        
+        
+        <dt>价格</dt>
+        <dd><ul>
+        <li>1毛</li><li>2毛</li><li>5毛</li><li>1元</li><li>5元</li><li>10元</li><li>50元</li><li>100元</li><li>100000台币</li><li>600000新台圆</li><li>6000000日圆</li><li>6000000韩圆</li><li>50美圆</li><li>50英镑</li><li>50欧元</li>
+        </ul></dd>
+
+    </dl>
+</body>
+</html>

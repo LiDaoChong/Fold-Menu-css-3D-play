@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG活性树</title>
+</head>
+<body>
+    <div style="width: 1600px;height: 800px;">
+            <p>右键添加 模拟目录结构</p>
+        <svg id='stage' key='root' width="100%" height="100%" viewBox="0 0 1600 800"  preserveAspectRatio:"none" style="background-color:#e5e5e5"xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs id='cells'>
+                <g class="gshap" style="display: none">
+                    <rect class='bkg' stroke-width="2" stroke="black" fill="blue" style="opacity: 0"/>
+                    <line class='liner1' stroke-width="2" stroke="black"/>    
+                    <line class='liner2' stroke-width="2" stroke="black"/>    
+                    <line class='liner3' stroke-width="2" stroke="black"/>    
+                    <rect class='recter' fill="red"/>    
+                </g>
+                <g class='shrinker'>
+                    <line id='showline' stroke="#ff0" stroke-width="2" style="opacity: 1"/>
+                    <circle class='cir' cx="10" cy="10" r="10" stroke="#ff0" stroke-width="2" fill="red" />    
+                    <text class='tagtxt' x="10" y="20" font-size="30" text-anchor="middle" fill="white">+</text>
+                </g>
+                    <rect id='drager' style='opacity:0.2' x="50" y="50" width="20" height="20" stroke-width="2" stroke="blue" draggable="draggable" style="z-index: 1000"/> 
+            </defs>
+                
+            <br/>    
+        </svg>
+    </div>
+    <ul id="testRight" style="padding:2px; background-color: yellow;position: absolute;z-index: 100;list-style: none">
+        <li style="border: 1px solid red;padding:0px 10px">
+            添加1个节点
+        </li>
+        <hr width="100%" color=#987cb9  />
+        <li style="border: 1px solid red;padding:0px 10px">
+            添加N个节点
+        </li>
+        <hr width="100%" color=#987cb9  />
+        <li style="border: 1px solid red;padding:0px 10px;display:none" >
+            删除所选节点
+        </li>
+    </ul>
+    
+
+    <script type="text/javascript">
+            // alert(document.body.clientHeight);
+                /*
+                 * MAP对象，实现MAP功能
+                 *
+                 * 接口：
+                 * size()     获取MAP元素个数
+                 * isEmpty()    判断MAP是否为空
+                 * clear()     删除MAP所有元素
+                 * put(key, value)   向MAP中增加元素（key, value) 
+                 * remove(key)    删除指定KEY的元素，成功返回True，失败返回False
+                 * get(key)    获取指定KEY的元素值VALUE，失败返回NULL
+                 * element(index) 不实现  获取指定索引的元素（使用element.key，element.value获取KEY和VALUE），失败返回NULL
+                 * containsKey(key)  判断MAP中是否含有指定KEY的元素
+                 * containsValue(value) 判断MAP中是否含有指定VALUE的元素
+                 * values()  不实现  获取MAP中所有VALUE的数组（ARRAY）
+                 * keys()   不实现  获取MAP中所有KEY的数组（ARRAY）
+                */
+        function Map(){
+            this.elems = new Array();
+                // 获取元素个数
+            this.size = function(){
+                return this.elems.length;
+            };
+            this.isEmpty = function(){
+               return (this.elems.length < 1);
+            }; 
+            this.clear = function() {
+                this.elems = new Array();
+            };
+            this.put = function(_key,_value){
+                this.elems.push({key:_key,value:_value});
+            };
+            this.remove = function(_key){
+                try{
+                    for(var i=0;i<this.elems.length;i++){
+                        if(this.elems[i].key==_key){
+                            this.elems.splise(i,1);
+                            return true;
+                        }
+                    }
+                }catch(e){
+                }
+                    return false; 
+            };
+            this.get = function(_key){
+                try{
+                    for(var i=0;i<this.elems.length;i++){
+                        if(this.elems[i].key==_key){
+                            return this.elems[i].value;
+                        }
+                    }
+                }catch(e){
+                }
+                return null;
+            };
+            this.containsKey = function(_key) {
+                var bln = false;
+                try {
+                    for (i = 0; i < this.elements.length; i++) {
+                        if (this.elements[i].key == _key) {
+                            bln = true;
+                        }
+                    }
+                } catch (e) {
+                    bln = false;
+                }
+                return bln;
+            };
+            this.containsValue = function(_value) {
+                var bln = false;
+                try {
+                    for (i = 0; i < this.elements.length; i++) {
+                        if (this.elements[i].value == _value) {
+                            bln = true;
+                        }
+                    }
+                } catch (e) {
+                    bln = false;
+                }
+                return bln;
+            };
+        }
+        
+        
+        (function(){
+            (function(){
+                Array.prototype.indexOf=function(val){
+                    for(var i;i<this.length;i++){
+                        if(this[i]==val){
+                            return i;
+                        }
+                        return -1;
+                    }
+                }
+                Array.prototype.remove=function(val){
+                    var index=this.indexOf(val);
+                    if(index > -1){
+                        this.splise(index,1);
+                    }
+                }
+            })();
+            var showline=document.getElementById('showline');
+            var Dom= {};
+            var Dmod = {};
+            var win = window;
+            var docu = document;
+            var stg = document.getElementById('stage');
+            Dom.cell = stg.getElementById('cells');
+            Dom.gshap = Dom.cell.getElementsByClassName('gshap')[0];
+            var forRight = docu.getElementById('testRight');
+            var rtitle = forRight.getElementsByTagName('li');
+            forRight.style.display = "none";
+            // 生成右键菜单并为每一个绑定事件，根据点击范围执行不同的处理
+            for (var i = 0; i < rtitle.length; i++) {
+                rtitle[i].setAttribute('i',i);
+                rtitle[i].addEventListener('click',function(evt){
+                    var e=evt||window.event;
+                    if (e.target.getAttribute('i')==0) {
+                        stgdb(1);
+                    } else if (e.target.getAttribute('i')==2) {
+                        revm(); 
+                    } else {
+                        var addnum = prompt("添加几个？","");
+                        stgdb(addnum);
+                    }
+                },true);
+            }
+            // 点击舞台取消右键菜单
+            docu.addEventListener('click',function(evt){
+                forRight.style.display = 'none';
+            });
+            // 存放将执行右键操作的项的栈
+            var child_stack= new Array();
+            // 右键选择添加后的处理Dmod.recter.setAttribute('fill','green');
+            function stgdb(n){
+                // 克隆节点 压栈 添加到舞台
+                
+                for (var i = 0; i < n; i++) {
+                    Dmod.gshap = Dom.gshap.cloneNode(true);
+                    Dmod.recter = Dmod.gshap.getElementsByClassName('recter')[0];
+                    Dmod.gshap.style.display='block';
+                    man.produce(Dmod.tarinfor,Dmod.gshap);
+                    stg.appendChild(Dmod.gshap);               
+                }
+                // console.log(mod_pond.get('root'));
+                mod_pond.get('root').given();
+            }
+                // 右键选择删除后执行的处理  // 
+            function revm(){
+                for(var i=child_stack.length;i>0;i--){
+                    stg.removeChild(child_stack.pop());
+                }
+            }
+            // 为舞台监听右键菜单
+            stg.addEventListener('contextmenu',function(evt){
+                var e=evt||window.event;
+                
+                forRight.style.left = e.clientX + 'px';
+                forRight.style.top = e.clientY + 'px';
+                forRight.style.display = 'block';
+                    
+                if(e.target.getAttribute('class')=='recter'){
+                    Dmod.tarinfor=e.target.parentNode.getAttribute('key');
+                    // console.log(Dmod.tarinfor);
+                    rtitle[2].style.display='block';
+                    if (e.target.getAttribute('fill')=='red') {
+                        e.target.setAttribute('fill','green');
+                        child_stack.push(e.target.parentNode);
+                    } 
+                }else{
+                    rtitle[2].style.display='none';
+                    Dmod.tarinfor=e.target.getAttribute('key');
+                    // console.log(Dmod.tarinfor);
+                }
+                e.returnValue=false;
+            },true);
+            stg.addEventListener('click',function(evt){
+                var e=evt||window.event;
+                 if(e.target.getAttribute('class')=='recter'){
+                    if(e.target.getAttribute('fill')=='green'){
+                        child_stack.remove(e.target.parentNode);
+                        e.target.setAttribute('fill','red');
+                    }
+                    //节点目标添加
+                    alert(e.target.parentNode.getAttribute('key'));
+                 }
+                 
+                 if(e.target.getAttribute('class')=='bkg'){
+                    alert(e.target.parentNode.getAttribute('key'));
+                    // alert(temp_UP_DOWN);节点父目标添加
+                 }
+            });
+            stg.addEventListener('mouseout',function(evt){
+                var e=evt||window.event;
+                if(e.target.getAttribute('class')=='recter'){
+                    temprect.setAttribute('fill','red');
+                }
+            });
+            stg.addEventListener('mousemove',showli);
+                var tempbkg=null,temprect=null,temp_UP_DOWN=null;
+            function showli(evt){
+                var e=evt||window.event;
+                stg.appendChild(showline);
+                if(e.target.getAttribute('class')=='bkg'){
+                    tempbkg=e.target;
+                    stg.appendChild(showline);
+                    showline.setAttribute('style','opacity: 1');
+                    if(parseInt(tempbkg.getAttribute('y'))+parseInt(tempbkg.getAttribute('height'))/2 >e.pageY-6){
+                        temp_UP_DOWN='Up';
+                        showline.setAttribute('x1',tempbkg.getAttribute('x'));
+                        showline.setAttribute('y1',tempbkg.getAttribute('y'));
+                        showline.setAttribute('x2',parseInt(tempbkg.getAttribute('width'))+parseInt(tempbkg.getAttribute('x')));
+                        showline.setAttribute('y2',tempbkg.getAttribute('y'));
+                    }else{
+                        temp_UP_DOWN='Down';
+                        showline.setAttribute('x1',tempbkg.getAttribute('x'));
+                        showline.setAttribute('y1',parseInt(tempbkg.getAttribute('y'))+parseInt(tempbkg.getAttribute('height')));
+                        showline.setAttribute('x2',parseInt(tempbkg.getAttribute('width'))+parseInt(tempbkg.getAttribute('x')));
+                        showline.setAttribute('y2',parseInt(tempbkg.getAttribute('y'))+parseInt(tempbkg.getAttribute('height')));
+                    }
+                }else if(e.target.getAttribute('class')=='recter'){
+                    showline.setAttribute('style','opacity: 0');
+                    temprect=e.target;
+                    temprect.setAttribute('fill','yellow');
+                }
+            }
+            // drager.addEventListener('click',function(evt){
+            //     var e=evt||window.event;
+            //     drager.setAttribute('width','30');
+            //     drager.setAttribute('height','30');
+                
+            //     stg.removeEventListener('mousemove',mmove);
+            // });
+            /*-----------------------------------------------------------------------------------------------*/
+            function ShapMod() {
+                ShapMod.LEAF_H=30;
+                ShapMod.BLEED=6;
+                ShapMod.BEARD=30;
+                ShapMod.PUT_H=20;
+                ShapMod.PUT_W=50;
+                ShapMod.BOX_W=110;//beard*2+put_W
+            }
+            // {'key':tempkey,'father_key':tar_key,'suns':[],'sunsN':0,'leafN':0};
+            ShapMod.prototype={
+                bdingData: function(_data){
+                    // alert('绑定数据');
+                    this.data=_data;
+                },
+                set_mx: function(_mx){
+                    this.data.mx=_mx;
+                    // this.reckon();
+                },
+                set_my: function(_my){
+                    this.data.mx=_my;
+                    // this.reckon();
+                },
+                set_leafN: function(_leafN){
+                    this.data.leafN=_leafN;
+                    // this.reckon();
+                },
+                reckon: function(){
+                    // try{
+                    // this.data.my=0;
+                        this.data.box_H = this.data.leafN*(ShapMod.LEAF_H+2*ShapMod.BLEED);
+                        this.data.x1=this.data.mx;
+                        this.data.x2=this.data.x1+ShapMod.BEARD;
+                        this.data.x3=this.data.x2+ShapMod.PUT_W;
+                        this.data.x4=this.data.x5=this.data.x6=this.data.x3+ShapMod.BEARD;
+                        this.data.y1=this.data.y2=this.data.y3=this.data.y4=this.data.my+this.data.box_H/2;
+                        if(mod_pond.get(this.data.suns[this.data.suns.length-1])!=null){
+                            if(mod_pond.get(this.data.suns[this.data.suns.length-1]).data.leafN>=1){
+                                this.dith=mod_pond.get(this.data.suns[this.data.suns.length-1]).data.leafN*(ShapMod.LEAF_H+2*ShapMod.BLEED)/2;
+                            }else{
+                                this.dith=0;
+                            }
+                        }
+                        if(this.data.leafN>1){
+                            
+                                this.tith=mod_pond.get(this.data.suns[0]).data.leafN*(ShapMod.LEAF_H+2*ShapMod.BLEED)/2;
+                        }else{
+                                this.tith=0;
+                        }
+                        
+                        (this.data.leafN>1)?(this.data.y5=this.data.my+this.tith)&&(this.data.y6=this.data.my+this.data.box_H-this.dith):(this.data.y5=this.data.y6=this.data.y4);
+                       
+                        this.data.put_X=this.data.x2;
+                        this.data.put_Y=this.data.y2-ShapMod.PUT_H/2;  
+        
+                },
+                given:function(){
+                    var atomH=ShapMod.LEAF_H+2*ShapMod.BLEED;
+                    var atom;
+                    var tempmy;
+                    var tempmx;
+                    if(this.data.key=='root'){
+                        tempmy=this.data.my-atomH*this.data.leafN/2;
+                        tempmx=0;
+                    }else{
+                        tempmy=this.data.my;
+                        tempmx=this.data.mx+ShapMod.BOX_W;
+                    }
+                        for(var i=0,s=this.data.suns;i<this.data.suns.length;i++){
+                            atom=mod_pond.get(s[i]);
+                            atom.data.my=tempmy;
+                            atom.data.mx=tempmx;
+                            this.render(atom);
+                            atom.given();
+                            tempmy+=atom.data.leafN*atomH;
+                        }
+                },
+                getdata: function(){
+                        // return {"mx":mx,"my":my,"leafN":leafN,"footY":footY,"rightX":rightX};
+                        // return {"mx":this.mx,"my":this.my,"leafN":this.leafN};
+                },
+                render:function(_tar){
+                    _tar.reckon();
+                    var skin=_tar.data.skin;
+                    var liner1=skin.getElementsByClassName('liner1')[0];
+                    var liner2=skin.getElementsByClassName('liner2')[0];
+                    var liner3=skin.getElementsByClassName('liner3')[0];
+                    var recter=skin.getElementsByClassName('recter')[0];
+                    var bkg=skin.getElementsByClassName('bkg')[0];
+                    
+                    liner1.setAttribute('x1',_tar.data.x1);
+                    liner1.setAttribute('y1',_tar.data.y1);
+                    liner1.setAttribute('x2',_tar.data.x2);
+                    liner1.setAttribute('y2',_tar.data.y2);
+                    liner2.setAttribute('x1',_tar.data.x3);
+                    liner2.setAttribute('y1',_tar.data.y3);
+                    liner2.setAttribute('x2',_tar.data.x4);
+                    liner2.setAttribute('y2',_tar.data.y4);
+                    liner3.setAttribute('x1',_tar.data.x5);
+                    liner3.setAttribute('y1',_tar.data.y5);
+                    liner3.setAttribute('x2',_tar.data.x6);
+                    liner3.setAttribute('y2',_tar.data.y6);
+                    recter.setAttribute('x',_tar.data.put_X);
+                    recter.setAttribute('y',_tar.data.put_Y);
+                    recter.setAttribute('width',ShapMod.PUT_W);
+                    recter.setAttribute('height',ShapMod.PUT_H);
+                    bkg.setAttribute('x',_tar.data.mx);
+                    bkg.setAttribute('y',_tar.data.my);
+                    bkg.setAttribute('width',ShapMod.BOX_W);
+                    bkg.setAttribute('height',_tar.data.box_H);
+                }
+            }
+                /*----------------------------------------------------------------------*/
+                /*---------数据模型雏形--------------------------------------------*/
+                /*    {'key':key,
+                        father_key:'fkey',
+                                'mx':mx,
+                                'my':my,
+                            "leafN":leafN,
+                            "footY":sunmy,
+                            "rightX":sunmx,
+                                suns:[...],
+                            sunsN:sunsLenght 
+                        }     
+                */
+            var man = new Modmanager();
+            function Modmanager(){
+                var fmx;
+                var fkey;
+                var counter=0;
+                var selfkey;
+                var tempdata;
+                var tempshap;
+                var stagnode;
+                    //添加一个数据
+                this.produce=function(_tar,_skin){
+                    try{    //获取(目标节点)父节点的key
+                        fkey=_tar;
+                    }catch(e){
+                        alert('获取容器失败');
+                        return null;
+                    }
+                        //创建元数据模型
+                        //生产key
+                    // stagnode = mod_pond.get('root');
+                    counter+=1;
+                    selfkey='key00'+counter;
+                    // alert(_tar);
+                    // fmx=mod_pond.get(fkey).data.mx;
+                    _skin.setAttribute('key',selfkey);
+                    // alert(mod_pond.get(fkey).data.my);
+                        //生产Shap模型
+                    tempshap = new ShapMod();
+                        //生产data数据原型并绑定到shap
+                    tempdata={'key':selfkey,'father_key':fkey,'suns':[],'leafN':1,'sunN':0,'skin':_skin};
+                    tempshap.bdingData(tempdata);
+                    // 把生成的ID记录到其父的子组
+                    mod_pond.get(fkey).data.suns.push(selfkey);
+                    // mod_pond.get(fkey).data.leafN++;
+                        //模型装箱
+                    mod_pond.put(selfkey,tempshap);
+                        //向上报数
+                    upTraverse(selfkey,'root',this.notify);
+                    
+                }
+                    
+                 
+                //删除一个数据
+                this.deletedata=function(_tar,_sun){
+                    var father;
+                    var sun;
+                     //获取(目标节点)父节点的key
+                    tar_key=_tar.getAttribute('key');
+                    father=mod_pond.get(tar_key);
+                     //获取删除目标的key
+                    sun_key=_sun.getAttribute('key');
+                    sun=mod_pond.get(sun_key);
+                    //从数据池中删除
+                    mod_pond.remove(sun_key);
+                    //从父的注册记录中删除
+                    father.suns.remove(sun_key);
+                    // 向上报数...
+                } 
+                // 以已正确结合树形添加自动居中排版报数的向上遍历器
+                this.notify=function(arg){
+                    var selfkey=arg[0];
+                    var selfnode=mod_pond.get(selfkey);
+                    var fkey=selfnode.data.father_key;
+                    var fnode=mod_pond.get(fkey);
+                    var grandf=null;
+                    if(fkey!='stag'){grandf=mod_pond.get(fnode.data.father_key);}
+                   
+                    if(fnode.data.sunN==0){
+                        if(fnode.data.suns.length>1){
+                            fnode.data.leafN+=1;
+                            fnode.data.sunN=1;
+                            if(grandf!=null){grandf.data.sunN=1; }
+                            return true;
+                        }else{
+                            return false;
+                        }                
+                    }else{
+                        fnode.data.leafN+=1;
+                        if(grandf!=null){grandf.data.sunN=1; }
+                        return true;         
+                    }
+                }
+            }
+            
+                // 相上遍历模型的方法  已正确结合树形添加自动居中排版报数
+            function upTraverse(_selfkey,_tokey,doSome){
+                var selfnode=mod_pond.get(_selfkey);
+                var f_key=selfnode.data.father_key;
+                var fnode=mod_pond.get(f_key);//当前节点的父
+                var hk=_tokey;//目标节点的key 通常设为根节点
+                // dosomething|向父节点报数|获取父链
+                var t;
+                t=doSome(arguments);
+                if(f_key==hk){
+                    return;
+                }else{
+                    if(!t){
+                        return;
+                    }
+                        upTraverse.call(this,f_key,hk,doSome);
+                    
+                }
+            }
+                       
+            // 记录父链
+            function fchainkeys(arg){
+                    var selfkey=arg[0];
+                    var selfnode=mod_pond.get(selfkey);
+                    var fkey=selfnode.data.father_key;
+                    this.push(fkey); 
+            }
+                    //获取最近共有祖先 传入参数为 皮肤数组
+            function recentAncestor(_skins){
+                if(_skins.length==1){return 'root';}
+                var skins=_skins;
+                var matrix=[];
+                for(var i=0;i<skins.length;i++){
+                    matrix[i]=[];
+                    upTraverse.apply(matrix[i],[skins[i].getAttribute('key'),'root',]);
+                }
+                if(matrix.length>1){
+                    for(var a=0,b=1;a<matrix.length-1,b<matrix.length;a++,b++){
+                        for(var i=0;i<matrix[a].length;i++){
+                            for(var j=0;j<matrix[b].length;j++){
+                                if(matrix[b][j]==matrix[a][i]){
+                                    if(matrix[b][j]=='root'){
+                                        return 'root';
+                                    }else{
+                                        (j>=i) ? matrix[b]=matrix[b].slice(j):matrix[b]=matrix[a].slice(i);
+                                        if(b=matrix.length-1){
+                                            return matrix[b][0];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    return 'root';
+                }
+                    
+            }
+        /*--------------------------------------------------------------------------------------------------------*/
+                    // {'key':selfkey,'father_key':fkey,'suns':[],'leafN':0};
+                        //重置舞台范围后重置入口坐标
+            function rootmy(){return stg.offsetHeight/2;}
+            var root_data = {'key':'root','father_key':'stag','suns':[],'mx':0,'my':rootmy(),'leafN':1,'sunN':0};
+            var rootMode = new ShapMod();
+                rootMode.bdingData(root_data);
+            var mod_pond = new Map();
+                mod_pond.put('root',rootMode);
+        /*===================================================================*/
+                                       
+        })();
+         
+        
+    </script>
+</body>
+</html>
