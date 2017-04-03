@@ -1,6 +1,6 @@
 # LiDaoChong.github.io
 a menu Linkage studies test
-# 夜如此黑 风如此冷 嘚嘚瑟瑟 哆哆嗦嗦 然而路还长。。。。。  必须前行
+# 黑夜与白昼 千里不问今 奈何成归意 置我若罔闻
 <br><hr/></br>
 # npm 文档翻译
 ## 入门指南
