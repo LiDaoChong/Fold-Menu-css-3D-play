@@ -2,6 +2,12 @@
 a menu Linkage studies test
 # 黑夜与白昼 千里不问今 奈何成归意 置我若罔闻
 <br><hr/></br>
+  早先糊弄的CSS3 js 三维折叠菜单和一些交互DEMO https://lidaochong.github.io/3dmenu/
+  Svg 拓展树节点原型 https://lidaochong.github.io/svgListTree/svgListTree.html
+ 小电商切图 https://lidaochong.github.io/e-businesscut/index.html
+ Canvas 倒挂彩虹 https://lidaochong.github.io/canvasrainbow/rainbow.html
+ flex移动端发言list 
+<br><hr/></br>
 # npm 文档翻译
 ## 入门指南
      01- 什么是npm?
