@@ -1,6 +1,6 @@
 # LiDaoChong.github.io
 a menu Linkage studies test
-# 黑夜与白昼 千里不问今 奈何成归意 置我若罔闻
+# 不能让心情主宰，也不能没有心情，溪水流过落花，我能否登上那不远不近不悲不喜的从容，你在等我，我在等你。
 <hr/>
 </br>
   早先糊弄的CSS3 js 三维折叠菜单和一些交互DEMO https://lidaochong.github.io/3dmenu/
