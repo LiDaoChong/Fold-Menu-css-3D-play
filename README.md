@@ -2,18 +2,6 @@
 a menu Linkage studies test
 # 不能让心情主宰，也不能没有心情，溪水流过落花，我能否登上那不远不近不悲不喜的从容，你在等我，我在等你。
 <hr/>
-</br>
-  早先糊弄的CSS3 js 三维折叠菜单和一些交互DEMO https://lidaochong.github.io/3dmenu/
- </br>
-  Svg 拓展树节点原型 https://lidaochong.github.io/svgListTree/svgListTree.html
- </br>
- 小电商切图 https://lidaochong.github.io/e-businesscut/index.html
- </br>
- Canvas 倒挂彩虹 https://lidaochong.github.io/canvasrainbow/rainbow.html
- </br>
- flex移动端发言list https://lidaochong.github.io/flex-layout/flex-layout.html
-</br>
-<hr/>
 
 # npm 文档翻译
 ## 入门指南
