@@ -1,6 +1,7 @@
 # LiDaoChong.github.io
 a menu Linkage studies test
-LiDaoChong.github.io/3dmenu/index.html
+<a href="LiDaoChong.github.io/3dmenu/index.html">3dmenu</a>
+
 <hr/>
 
 # npm 文档翻译
