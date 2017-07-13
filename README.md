@@ -1,6 +1,6 @@
 # LiDaoChong.github.io
 a menu Linkage studies test
-# 不能让心情主宰，也不能没有心情，溪水流过落花，我能否登上那不远不近不悲不喜的从容，你在等我，我在等你。
+LiDaoChong.github.io/3dmenu/index.html
 <hr/>
 
 # npm 文档翻译
