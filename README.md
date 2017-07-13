@@ -1,5 +1,5 @@
-# LiDaoChong.github.io
-a menu Linkage studies test
+# 作者李连杰，开发笔名李道冲。
+我学习体会写过的一点玩应。
 <br/>
 <a href="https://lidaochong.github.io/3dmenu/index.html">3dmenu</a>
 
