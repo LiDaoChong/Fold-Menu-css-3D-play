@@ -1,6 +1,7 @@
 # LiDaoChong.github.io
 a menu Linkage studies test
-<a href="LiDaoChong.github.io/3dmenu/index.html">3dmenu</a>
+<br/>
+<a href="https://lidaochong.github.io/3dmenu/index.html">3dmenu</a>
 
 <hr/>
 
