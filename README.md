@@ -8,4 +8,4 @@
 <a href="https://LiDaoChong.github.io/svgListTree/svgListTree.html">SVG元素模拟树结构动态操作增量布局</a>
 <hr/>
 
-<a href="https://LiDaoChong.github.io/blob/master/translate/npmstartguide.md">npm 指南</a>
+<a href="LiDaoChong.github.io/translate/npmstartguide.md">npm 指南</a>
